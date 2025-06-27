@@ -8,7 +8,7 @@ export default function PubSearch({
   form,
   options,
   onFinish,
-  collapse,
+  collapse = false,
 }: PublicSearchIF) {
   const [collapsed, setCollapsed] = useState(false);
   const [list, setList] = useState(options);

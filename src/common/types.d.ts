@@ -1,4 +1,4 @@
-import type { TableProps } from "antd";
+import type { TableProps, MenuProps } from "antd";
 import { ComponentType } from "react";
 
 // 定义一个接口，用于描述表格的公共属性和方法的类型。
@@ -51,17 +51,17 @@ export interface PublicFormIF {
 
 interface FlexOptionItemIF {
   isFlex: true;
-  component: JSX.Element | ComponentType<any>;
+  component: React.ReactElement;
 }
 
 interface DefaultOptionItemIF {
   isFlex?: false | undefined;
   label: string;
   field: string | undefined;
-  rules?: [{ required: boolean; message: string }];
+  component: React.ReactElement;
+  rules?: { required: boolean; message?: string }[];
   labelCol?: { span: number };
   wrapperCol?: { span: number };
-  component: JSX.Element | ComponentType<any>;
 }
 
 export type OptionItemIF = FlexOptionItemIF | DefaultOptionItemIF;
@@ -71,5 +71,29 @@ interface PublicSearchIF {
   form: any;
   options: OptionItemIF[];
   onFinish: any;
-  collapse: boolean; //开启search折叠功能 true开启
+  collapse?: boolean; //开启search折叠功能 true开启
+}
+
+//定义分步表单的公共属性和方法的类型
+export interface PublicStepFormIF {
+  form: any;
+  steps: { title: string; options: OptionItemIF[] }[];
+  onPrev: () => void;
+  onNext: (value) => void;
+  formlayout?: {
+    labelCol?: {
+      span: number;
+    };
+    wrapperCol?: {
+      span: number;
+    };
+  };
+  column?: 1 | 2 | 3 | 4;
+}
+
+//布局组件的公共属性和方法的类型
+export interface PublicLayoutIF {
+  menus: MenuProps["items"];
+  goTo?: (path) => void;
+  children?: JSX.Element;
 }

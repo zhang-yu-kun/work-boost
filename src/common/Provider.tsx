@@ -23,6 +23,11 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           Button: {
             borderRadius: 4,
           },
+          Layout: {
+            /* 这里是你的组件 token */
+            headerBg: "#fefefe",
+            lightSiderBg: "#f0f2f5",
+          },
         },
       }}
       locale={zhCN}
