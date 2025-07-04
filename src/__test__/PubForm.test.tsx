@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import PubForm from "./index";
+import PubForm from "../lib/PubForm";
 import { Form } from "antd";
-import { form_column_map, form_offset_config_map } from "../../common/constant";
+import { form_column_map, form_offset_config_map } from "../common/constant";
 import type { ColProps } from "antd";
-import type { OptionItemIF } from "../../common/types";
+import type { OptionItemIF } from "../common/types";
 
 // 为 mock 的 Col 添加类型
 jest.mock("antd", () => {
@@ -201,6 +201,33 @@ describe("PubForm Component", () => {
     const col = screen.getByTestId("col");
     expect(col).toBeInTheDocument();
     expect(col).toHaveAttribute("data-span", "24");
+  });
+  it("不传column的情况，看clolumn是多少", () => {
+    const options = [
+      {
+        label: "Name",
+        field: "name",
+        component: <input />,
+        isFlex: false,
+      },
+    ];
+
+    const TestComponent = () => {
+      const [form] = Form.useForm();
+      return (
+        <PubForm
+          form={form}
+          name="testForm"
+          options={options}
+          onFinish={jest.fn()}
+        />
+      );
+    };
+
+    render(<TestComponent />);
+    const col = screen.getByTestId("col");
+    expect(col).toBeInTheDocument();
+    expect(col).toHaveAttribute("data-span", "12");
   });
   describe("PubForm Component", () => {
     const testCases = [1, 2, 3];

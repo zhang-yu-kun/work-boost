@@ -1,5 +1,6 @@
 import type { TableProps, MenuProps } from "antd";
 import { ComponentType } from "react";
+import type { Location, UIMatch, Path } from "react-router";
 
 // 定义一个接口，用于描述表格的公共属性和方法的类型。
 export interface PublicTableIF extends TableProps {
@@ -94,6 +95,6 @@ export interface PublicStepFormIF {
 //布局组件的公共属性和方法的类型
 export interface PublicLayoutIF {
   menus: MenuProps["items"];
-  goTo?: (path) => void;
+  bread?: boolean;
   children?: JSX.Element;
 }

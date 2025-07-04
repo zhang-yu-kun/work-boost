@@ -1,50 +1,107 @@
 import PubLayout from "../lib/PubLayout";
+import { ItemA, ItemB, ItemC, ItemD, ItemE, ItemF } from "./Item";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Navigate,
+} from "react-router";
+
+const mockMenus = [
+  // 场景1: 有子菜单的菜单项
+  {
+    key: "/dashboard",
+    label: "控制台",
+    children: [
+      { key: "/dashboard/itemA", label: "模块A" },
+      { key: "/dashboard/itemB", label: "模块B" },
+    ],
+  },
+  // 场景2: 多级嵌套菜单
+  {
+    key: "/settings",
+    label: "设置",
+    children: [
+      {
+        key: "/user",
+        label: "用户",
+        children: [
+          { key: "/settings/user/itemC", label: "模块C" },
+          { key: "/settings/user/itemD", label: "模块D" },
+        ],
+      },
+      {
+        key: "/settings/itemE",
+        label: "模块E",
+      },
+    ],
+  },
+  // 场景3: 无子菜单的菜单项
+  {
+    key: "/help",
+    label: "帮助",
+  },
+];
+
+const router = createBrowserRouter([
+  { index: true, element: <Navigate to="/dashboard" replace /> },
+  {
+    path: "/",
+    element: (
+      <PubLayout menus={mockMenus} bread={true}>
+        <Outlet />
+      </PubLayout>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="itemA" replace />,
+          },
+          {
+            path: "itemA",
+            element: <ItemA />,
+          },
+          {
+            path: "itemB",
+            element: <ItemB />,
+          },
+        ],
+      },
+      {
+        path: "settings",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="user" replace />,
+          },
+          {
+            path: "user",
+            children: [
+              {
+                index: true,
+                element: <Navigate to="itemC" replace />,
+              },
+              { path: "itemC", element: <ItemC /> },
+              { path: "itemD", element: <ItemD /> },
+            ],
+          },
+          {
+            path: "itemE",
+            element: <ItemE />,
+          },
+        ],
+      },
+      {
+        path: "help",
+        element: <ItemF />,
+      },
+    ],
+  },
+]);
 
 export default function App() {
-  const menus = [
-    {
-      key: "1",
-      label: "首页",
-    },
-
-    {
-      key: "2",
-      label: "购物车",
-      children: [
-        {
-          key: "3",
-          label: "购物车",
-        },
-        {
-          key: "4",
-          label: "我的订单",
-        },
-      ],
-    },
-    {
-      key: "5",
-      label: "我的",
-      children: [
-        {
-          key: "6",
-          label: "4-1",
-        },
-        {
-          key: "7",
-          label: "4-2",
-          children: [
-            {
-              key: "8",
-              label: "关于我们",
-            },
-            {
-              key: "9",
-              label: "更多",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-  return <PubLayout menus={menus} />;
+  return <RouterProvider router={router} />;
 }

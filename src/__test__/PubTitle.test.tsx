@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import PubTitle from "./index";
+import PubTitle from "../lib/PubTitle";
 
 describe("PubTitle Component", () => {
   it("should render default style (size: s) and text", () => {

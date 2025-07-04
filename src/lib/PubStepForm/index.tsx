@@ -1,40 +1,28 @@
 import Provider from "../../common/Provider";
 import { form_column_map } from "../../common/constant";
 import type { PublicStepFormIF, OptionItemIF } from "../../common/types";
-
 import { useState, useMemo } from "react";
 import { Steps, Button, Form, Row, Col } from "antd";
 
-export default function PubStepForm({
-  form,
-  steps,
-  onPrev,
-  onNext,
-  formlayout,
-  column = 1,
-}: PublicStepFormIF) {
+export default function PubStepForm(props: PublicStepFormIF) {
+  const { form, steps, onPrev, onNext, formlayout, column = 1 } = props;
   const [current, setCurrent] = useState(0);
-
-  const item = steps?.map((item: any) => ({ title: item.title }));
-
+  const stepItem = steps.map(
+    (item: { title: string; options: OptionItemIF[] }) => ({
+      title: item.title,
+    })
+  );
   const options = useMemo(() => {
     return steps[current]?.options;
   }, [current, steps]);
-
   const hanldePrev = () => {
-    if (current > 0) {
-      setCurrent((prev) => prev - 1);
-      onPrev();
-    }
+    setCurrent((prev) => prev - 1);
+    onPrev();
   };
-
   const handelNext = (value: any) => {
-    if (current < steps.length) {
-      setCurrent((prev) => prev + 1);
-      onNext(value);
-    }
+    setCurrent((prev) => prev + 1);
+    onNext(value);
   };
-
   return (
     <Provider>
       <Form
@@ -45,10 +33,15 @@ export default function PubStepForm({
         style={{ width: "100%" }}
         clearOnDestroy
       >
-        <Steps current={current} items={item} style={{ marginBottom: 20 }} />
+        <Steps
+          current={current}
+          items={stepItem}
+          style={{ marginBottom: 20 }}
+        />
         <Row gutter={16}>
           {options?.map((item: OptionItemIF, index) => (
             <Col
+              role="col"
               span={form_column_map[column]}
               key={!item.isFlex ? item.field : index}
             >

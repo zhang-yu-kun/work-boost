@@ -10,15 +10,15 @@ export default function PubSearch({
   onFinish,
   collapse = false,
 }: PublicSearchIF) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [list, setList] = useState(options);
   useEffect(() => {
-    if (collapsed) {
+    if (collapse && collapsed) {
       setList(options.slice(0, 7));
     } else {
       setList(options);
     }
-  }, [collapsed, options]);
+  }, [collapse, collapsed, options]);
   return (
     <Provider>
       <PubForm
@@ -30,6 +30,7 @@ export default function PubSearch({
         formlayout={{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
       >
         <div
+          data-testid="buttons"
           style={{
             display: "flex",
             justifyContent: "end",
@@ -43,7 +44,11 @@ export default function PubSearch({
             重置
           </Button>
           {collapse && options.length > 7 && (
-            <Button type="link" onClick={() => setCollapsed(!collapsed)}>
+            <Button
+              type="link"
+              onClick={() => setCollapsed(!collapsed)}
+              data-testid="collapsed"
+            >
               {collapsed ? "展开" : "收起"}
             </Button>
           )}
