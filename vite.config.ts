@@ -8,6 +8,7 @@ export default defineConfig({
         skipLibCheck: true,
         noEmitOnError: false,
       },
+      exclude: ["./src/view", "./src/__test__"],
     }),
   ],
   build: {
