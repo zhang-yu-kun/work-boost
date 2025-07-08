@@ -1,13 +1,7 @@
-import { Form } from "antd";
-import PubLoginForm from "../lib/PubLoginForm";
+import { TreeSelect } from "antd";
 
 export const ItemA = () => {
-  const [form] = Form.useForm();
-  return (
-    <div>
-      <PubLoginForm />
-    </div>
-  );
+  return <></>;
 };
 
 export const ItemB = () => {

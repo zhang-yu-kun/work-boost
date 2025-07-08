@@ -6,6 +6,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router";
+import Login from "./Login";
 
 const mockMenus = [
   // 场景1: 有子菜单的菜单项
@@ -44,7 +45,7 @@ const mockMenus = [
 ];
 
 const router = createBrowserRouter([
-  { index: true, element: <Navigate to="/dashboard" replace /> },
+  { index: true, element: <Navigate to="/login" replace /> },
   {
     path: "/",
     element: (
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
         element: <ItemF />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

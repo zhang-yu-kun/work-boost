@@ -1,5 +1,5 @@
 import type { TableProps, MenuProps } from "antd";
-import { ComponentType } from "react";
+import { ComponentType, ReactNode } from "react";
 import type { Location, UIMatch, Path } from "react-router";
 
 // 定义一个接口，用于描述表格的公共属性和方法的类型。
@@ -97,4 +97,14 @@ export interface PublicLayoutIF {
   menus: MenuProps["items"];
   bread?: boolean;
   children?: JSX.Element;
+}
+
+//
+export interface PubLoginFormIF {
+  form: any;
+  theme: "techno" | "natural" | "fire";
+  signInConent: { label: string; field: string }[];
+  signUpContent: { label: string; field: string }[];
+  onSubmit: (value) => void;
+  onForgetPassword: () => void;
 }

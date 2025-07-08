@@ -25,7 +25,7 @@ export default {
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   
   moduleNameMapper: {
-    "\\.(css|less|scss|sass)$": "jest-transform-stub",
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.ts",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
@@ -34,4 +34,8 @@ export default {
   collectCoverage: true,
   coverageReporters: ['text', 'text-summary'],
   coverageDirectory: 'coverage',
+  transform: {
+		'^.+\\.js$': 'babel-jest',
+		// '\\.(less|css)$': 'jest-less-loader' // 支持less
+	},
 };
