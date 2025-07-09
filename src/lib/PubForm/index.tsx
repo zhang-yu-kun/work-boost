@@ -29,6 +29,7 @@ export default function PubForm({
       <Row gutter={16}>
         {options?.map((item: OptionItemIF, index) => (
           <Col
+            style={{ marginTop: 12, marginBottom: 12 }}
             span={form_column_map[column]}
             key={!item.isFlex ? item.field : index}
           >
@@ -48,7 +49,11 @@ export default function PubForm({
           </Col>
         ))}
         {children && (
-          <Col span={form_column_map[column]} offset={offset()}>
+          <Col
+            style={{ marginTop: 12, marginBottom: 12 }}
+            span={form_column_map[column]}
+            offset={offset()}
+          >
             {children}
           </Col>
         )}

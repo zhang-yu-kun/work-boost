@@ -63,7 +63,14 @@ const PubTable = ({
 
   return (
     <Provider>
-      <div>
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: 8,
+          marginTop: 24,
+          padding: "12px 22px 32px",
+        }}
+      >
         {isShow && (
           <div
             style={{

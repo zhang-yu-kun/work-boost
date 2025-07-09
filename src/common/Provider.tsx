@@ -27,6 +27,10 @@ export default function Provider({ children }: { children: React.ReactNode }) {
             /* 这里是你的组件 token */
             headerBg: "#fefefe",
             lightSiderBg: "#f0f2f5",
+            bodyBg: "linear-gradient(to right, #F0F0F0,#ECF1F750,#F5F5F5)",
+          },
+          Form: {
+            itemMarginBottom: 0,
           },
         },
       }}

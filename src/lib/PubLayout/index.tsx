@@ -61,38 +61,57 @@ export default function PubLayout({ menus, bread, children }: PublicLayoutIF) {
   };
   return (
     <Provider>
-      <Layout>
-        <Header style={{ display: "flex", alignItems: "center" }}>
-          <div className="demo-logo" />
-          <Menu
-            theme="light"
-            mode="horizontal"
-            items={menusFirst}
-            style={{ flex: 1, minWidth: 0 }}
-            onSelect={({ key }) => nevigate(key)}
-          />
-        </Header>
-        <Layout>
-          {siderMenu.length > 0 && (
-            <Sider theme="light" width={200}>
-              <Menu
-                mode="inline"
-                style={{ height: "100%", borderRight: 0 }}
-                items={siderMenu}
-                onSelect={({ key }) => nevigate(key)}
-              />
-            </Sider>
-          )}
+      <div>
+        <Layout
+          style={{
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            margin: "0",
+          }}
+        >
+          <Header
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div className="demo-logo" />
+            <Menu
+              theme="light"
+              mode="horizontal"
+              items={menusFirst}
+              style={{ flex: 1, minWidth: 0, background: "#fefefe" }}
+              onSelect={({ key }) => nevigate(key)}
+            />
+          </Header>
+          <Layout>
+            {siderMenu.length > 0 && (
+              <Sider theme="light" width={200}>
+                <Menu
+                  mode="inline"
+                  style={{
+                    height: "100%",
 
-          <Layout style={{ padding: "0 24px 24px" }}>
-            {bread && (
-              <Breadcrumb items={breadList} style={{ margin: "16px 0" }} />
+                    background:
+                      "linear-gradient(to bottom,#fff, #F0F0F0,#E7EDF6)",
+                  }}
+                  items={siderMenu}
+                  onSelect={({ key }) => nevigate(key)}
+                />
+              </Sider>
             )}
 
-            <Content>{children}</Content>
+            <Layout style={{ padding: "0 24px 24px" }}>
+              {bread && (
+                <Breadcrumb items={breadList} style={{ margin: "16px 0" }} />
+              )}
+
+              <Content>{children}</Content>
+            </Layout>
           </Layout>
         </Layout>
-      </Layout>
+      </div>
     </Provider>
   );
 }
