@@ -17,6 +17,7 @@ export default defineConfig({
       name: "work-boost",
       fileName: (format) => `work-boost.${format}.js`,
     },
+    cssCodeSplit: true,
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
