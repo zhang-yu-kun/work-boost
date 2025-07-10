@@ -17,7 +17,6 @@ export default defineConfig({
       name: "work-boost",
       fileName: (format) => `work-boost.${format}.js`,
     },
-    cssCodeSplit: true,
     rollupOptions: {
       external: ["react", "react-dom"],
       output: {
@@ -26,6 +25,30 @@ export default defineConfig({
           "react-dom": "ReactDOM",
         },
       },
+      plugins: [
+        {
+          name: "css-injection",
+          generateBundle(options, bundle) {
+            // 收集所有CSS内容
+            let css = "";
+            for (const key in bundle) {
+              if (bundle[key].type === "asset" && key.endsWith(".css")) {
+                css += bundle[key].source;
+                delete bundle[key];
+              }
+            }
+
+            // 注入到JS中
+            if (css) {
+              this.emitFile({
+                type: "asset",
+                fileName: "work-boost.css",
+                source: css,
+              });
+            }
+          },
+        },
+      ],
     },
   },
 });
