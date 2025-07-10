@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
   plugins: [
@@ -10,6 +11,7 @@ export default defineConfig({
       },
       exclude: ["./src/view", "./src/__test__"],
     }),
+    cssInjectedByJsPlugin(),
   ],
   build: {
     lib: {
@@ -25,30 +27,20 @@ export default defineConfig({
           "react-dom": "ReactDOM",
         },
       },
-      plugins: [
-        {
-          name: "css-injection",
-          generateBundle(options, bundle) {
-            // 收集所有CSS内容
-            let css = "";
-            for (const key in bundle) {
-              if (bundle[key].type === "asset" && key.endsWith(".css")) {
-                css += bundle[key].source;
-                delete bundle[key];
-              }
-            }
-
-            // 注入到JS中
-            if (css) {
-              this.emitFile({
-                type: "asset",
-                fileName: "work-boost.css",
-                source: css,
-              });
-            }
-          },
-        },
-      ],
+    },
+    cssCodeSplit: true,
+  },
+  css: {
+    modules: {
+      localsConvention: "camelCaseOnly",
+      scopeBehaviour: "local",
+      // ========== 关键修复：添加类名生成规则 ==========
+      generateScopedName: "[name]__[local]___[hash:base64:5]",
+    },
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
     },
   },
 });
