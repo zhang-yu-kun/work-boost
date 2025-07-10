@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Row, Col } from "antd";
 import PubSearch from "../lib/PubSearch";
 import PubTable from "../lib/PubTable";
 import PubForm from "../lib/PubForm";
@@ -7,12 +7,15 @@ export const ItemA = () => {
   const [form] = Form.useForm();
   const options = [
     {
-      component: <Input />,
-    },
-    {
+      isFlex: true,
       component: (
-        <Form.Item label="测试2" name="bbb">
-          <Input />
+        <Form.Item label="ccc">
+          <Form.Item name="aaa">
+            <Input />
+          </Form.Item>
+          <Form.Item name="bbb">
+            <Input />
+          </Form.Item>
         </Form.Item>
       ),
     },
@@ -81,6 +84,9 @@ export const ItemB = () => {
             key: "address",
           },
         ]}
+        header={{
+          HeaderRender: [{ text: "测试", type: "primary" }, { text: "daochu" }],
+        }}
       />
     </div>
   );

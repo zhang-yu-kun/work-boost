@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import Provider from "../../common/Provider";
 import type { TablePaginationConfig } from "antd";
 import type {
@@ -81,8 +81,24 @@ const PubTable = ({
             }}
           >
             <PubTitle text={tableTitle} />
-
-            {HeaderRender}
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {HeaderRender?.map((item, index: number) => (
+                <Button
+                  key={index}
+                  type={item.type || "default"}
+                  htmlType={item.htmlType || "button"}
+                  style={{ marginLeft: 8 }}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </div>
           </div>
         )}
         <Table

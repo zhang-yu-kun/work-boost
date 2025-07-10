@@ -147,7 +147,11 @@ describe("PubTable Component", () => {
   const mockHeader: HeaderIF = {
     isShow: true,
     tableTitle: "Test Table",
-    HeaderRender: <div data-testid="header-render">Custom Header</div>,
+    HeaderRender: [
+      {
+        text: "测试",
+      },
+    ],
   };
 
   const mockTableChange = jest.fn();
@@ -184,7 +188,7 @@ describe("PubTable Component", () => {
     );
 
     expect(screen.getByTestId("pub-title")).toHaveTextContent("Test Table");
-    expect(screen.getByTestId("header-render")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "测 试" })).toBeInTheDocument();
   });
 
   // 测试header隐藏

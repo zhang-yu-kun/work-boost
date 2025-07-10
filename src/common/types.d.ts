@@ -1,4 +1,4 @@
-import type { TableProps, MenuProps, FormInstance } from "antd";
+import type { TableProps, MenuProps, FormInstance, ButtonProps } from "antd";
 import { ComponentType, ReactNode } from "react";
 import type { Location, UIMatch, Path } from "react-router";
 
@@ -29,7 +29,11 @@ export interface RowIF {
 export interface HeaderIF {
   isShow?: boolean; // 是否显示抬头信息
   tableTitle?: string;
-  HeaderRender?: JSX.Element;
+  HeaderRender?: {
+    type?: ButtonProps["type"];
+    htmlType?: ButtonProps["htmlType"];
+    text: string;
+  }[];
 }
 
 //定义一个接口，用于描述表单的公共属性和方法的类型。
