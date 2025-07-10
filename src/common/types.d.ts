@@ -1,4 +1,4 @@
-import type { TableProps, MenuProps } from "antd";
+import type { TableProps, MenuProps, FormInstance } from "antd";
 import { ComponentType, ReactNode } from "react";
 import type { Location, UIMatch, Path } from "react-router";
 
@@ -34,10 +34,10 @@ export interface HeaderIF {
 
 //定义一个接口，用于描述表单的公共属性和方法的类型。
 export interface PublicFormIF {
-  form: any;
+  form: FormInstance;
   name: string;
   options: OptionItemIF[];
-  onFinish: any;
+  onFinish: (value) => void;
   formlayout?: {
     labelCol?: {
       span: number;
@@ -50,26 +50,21 @@ export interface PublicFormIF {
   children?: JSX.Element;
 }
 
-interface FlexOptionItemIF {
-  isFlex: true;
+interface OptionItemIF {
   component: React.ReactElement;
-}
-
-interface DefaultOptionItemIF {
-  isFlex?: false | undefined;
-  label: string;
-  field: string | undefined;
-  component: React.ReactElement;
+  isFlex?: boolean;
+  label?: string;
+  field?: string;
   rules?: { required: boolean; message?: string }[];
   labelCol?: { span: number };
   wrapperCol?: { span: number };
 }
 
-export type OptionItemIF = FlexOptionItemIF | DefaultOptionItemIF;
+// export type OptionItemIF = FlexOptionItemIF | DefaultOptionItemIF;
 
 //定义搜索组件的公共属性和方法的类型
 interface PublicSearchIF {
-  form: any;
+  form: FormInstance;
   options: OptionItemIF[];
   onFinish: any;
   collapse?: boolean; //开启search折叠功能 true开启
@@ -77,7 +72,7 @@ interface PublicSearchIF {
 
 //定义分步表单的公共属性和方法的类型
 export interface PublicStepFormIF {
-  form: any;
+  form: FormInstance;
   steps: { title: string; options: OptionItemIF[] }[];
   onPrev: () => void;
   onNext: (value) => void;
@@ -101,7 +96,7 @@ export interface PublicLayoutIF {
 
 //
 export interface PubLoginFormIF {
-  form: any;
+  form: FormInstance;
   theme: "techno" | "natural" | "fire";
   signInConent: { label: string; field: string }[];
   signUpContent: { label: string; field: string }[];

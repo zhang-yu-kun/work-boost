@@ -27,13 +27,24 @@ export default function PubForm({
       clearOnDestroy
     >
       <Row gutter={16}>
-        {options?.map((item: OptionItemIF, index) => (
-          <Col
-            style={{ marginTop: 12, marginBottom: 12 }}
-            span={form_column_map[column]}
-            key={!item.isFlex ? item.field : index}
-          >
-            {!item.isFlex ? (
+        {options?.map((item: OptionItemIF, index) => {
+          if (item.isFlex) {
+            return (
+              <Col
+                style={{ marginTop: 12, marginBottom: 12 }}
+                span={form_column_map[column]}
+                key={index}
+              >
+                {item.component}
+              </Col>
+            );
+          }
+          return (
+            <Col
+              style={{ marginTop: 12, marginBottom: 12 }}
+              span={form_column_map[column]}
+              key={item.field}
+            >
               <Form.Item
                 label={item.label}
                 name={item.field}
@@ -43,11 +54,9 @@ export default function PubForm({
               >
                 {item.component}
               </Form.Item>
-            ) : (
-              item.component
-            )}
-          </Col>
-        ))}
+            </Col>
+          );
+        })}
         {children && (
           <Col
             style={{ marginTop: 12, marginBottom: 12 }}

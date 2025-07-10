@@ -1,9 +1,32 @@
-import { Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import PubSearch from "../lib/PubSearch";
 import PubTable from "../lib/PubTable";
+import PubForm from "../lib/PubForm";
 
 export const ItemA = () => {
-  return <></>;
+  const [form] = Form.useForm();
+  const options = [
+    {
+      component: <Input />,
+    },
+    {
+      component: (
+        <Form.Item label="测试2" name="bbb">
+          <Input />
+        </Form.Item>
+      ),
+    },
+  ];
+  return (
+    <PubForm
+      form={form}
+      name="test"
+      options={options}
+      onFinish={(v) => console.log(v)}
+    >
+      <Button htmlType="submit">提交</Button>
+    </PubForm>
+  );
 };
 
 export const ItemB = () => {
@@ -12,12 +35,7 @@ export const ItemB = () => {
     <div>
       <PubSearch
         form={form}
-        options={[
-          { label: "测试", field: "aaa", component: <Input /> },
-          { label: "测试", field: "aa2", component: <Input /> },
-          { label: "测试", field: "aa3", component: <Input /> },
-          { label: "测试", field: "aa4", component: <Input /> },
-        ]}
+        options={[{ label: "测试", field: "aaa", component: <Input /> }]}
         onFinish={() => {}}
       />
       <PubTable

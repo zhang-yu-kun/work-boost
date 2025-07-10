@@ -1,12 +1,18 @@
+type itmeForMap = {
+  small: { box: any; span: any };
+  middle: { box: any; span: any };
+  large: { box: any; span: any };
+};
+
 export default function PubTitle({
   text,
   size,
 }: {
   text?: string;
-  size?: "s" | "l";
+  size?: "small" | "middle" | "large";
 }) {
-  const map: { s: { box: any; span: any }; l: { box: any; span: any } } = {
-    s: {
+  const map: itmeForMap = {
+    small: {
       box: {
         display: "flex",
         alignItems: "center",
@@ -21,7 +27,7 @@ export default function PubTitle({
         background: "#0052d9",
       },
     },
-    l: {
+    middle: {
       box: {
         display: "flex",
         alignItems: "center",
@@ -36,11 +42,29 @@ export default function PubTitle({
         background: "#0052d9",
       },
     },
+    large: {
+      box: {
+        display: "flex",
+        alignItems: "center",
+        marginBottom: 32,
+        fontSize: 32,
+        fontWeight: 700,
+      },
+      span: {
+        width: 8,
+        height: 32,
+        marginRight: 22,
+        background: "#0052d9",
+      },
+    },
   };
   if (!text) return null;
   return (
-    <div style={map[size || "s"].box} data-testid="pub-title">
-      <span style={map[size || "s"].span} data-testid="pub-title-marker"></span>
+    <div style={map[size || "small"].box} data-testid="pub-title">
+      <span
+        style={map[size || "small"].span}
+        data-testid="pub-title-marker"
+      ></span>
       {text}
     </div>
   );
