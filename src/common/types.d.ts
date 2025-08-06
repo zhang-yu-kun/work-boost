@@ -51,11 +51,11 @@ export interface PublicFormIF {
     };
   };
   column?: 1 | 2 | 3 | 4;
-  children?: JSX.Element;
+  children?: React.ReactNode;
 }
 
 interface OptionItemIF {
-  component: React.ReactElement;
+  component: React.ReactNode;
   isFlex?: boolean;
   label?: string;
   field?: string;
@@ -94,8 +94,10 @@ export interface PublicStepFormIF {
 //布局组件的公共属性和方法的类型
 export interface PublicLayoutIF {
   menus: MenuProps["items"];
-  bread?: boolean;
-  children?: JSX.Element;
+  tabsRouter?: ReactNode;
+  navigate: (path: string) => void;
+  matches: UIMatch[];
+  children?: React.ReactNode;
 }
 
 //

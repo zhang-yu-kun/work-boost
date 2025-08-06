@@ -25,7 +25,7 @@ describe("PubTitle Component", () => {
   });
 
   it('should apply small size styles when size is "s"', () => {
-    render(<PubTitle text="Small Title" size="s" />);
+    render(<PubTitle text="Small Title" size="small" />);
 
     const container = screen.getByTestId("pub-title");
     const span = screen.getByTestId("pub-title-marker");
@@ -47,7 +47,7 @@ describe("PubTitle Component", () => {
   });
 
   it('should apply large size styles when size is "l"', () => {
-    render(<PubTitle text="Large Title" size="l" />);
+    render(<PubTitle text="Large Title" size="large" />);
 
     // 使用 queryByTestId 查找元素，它返回 null 而不是抛出异常
     const container = screen.queryByTestId("pub-title");

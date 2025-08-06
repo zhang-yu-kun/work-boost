@@ -1,7 +1,8 @@
-import { Button, Form, Input, Row, Col } from "antd";
+import { Button, Form, Input } from "antd";
 import PubSearch from "../lib/PubSearch";
 import PubTable from "../lib/PubTable";
 import PubForm from "../lib/PubForm";
+import PubStepForm from "../lib/PubStepForm";
 
 export const ItemA = () => {
   const [form] = Form.useForm();
@@ -93,7 +94,34 @@ export const ItemB = () => {
 };
 
 export const ItemC = () => {
-  return <div>ItemC</div>;
+  const [form] = Form.useForm();
+
+  const steps = [
+    {
+      title: "第一步",
+      options: [
+        { label: "测试", field: "aaa", component: <Input /> },
+        { label: "测试2", field: "bbb", component: <Input /> },
+      ],
+    },
+    {
+      title: "第二步",
+      options: [
+        { label: "测试3", field: "ccc", component: <Input /> },
+        { label: "测试4", field: "ddd", component: <Input /> },
+      ],
+    },
+  ];
+  return (
+    <div>
+      <PubStepForm
+        form={form}
+        steps={steps}
+        onNext={() => {}}
+        onPrev={() => {}}
+      />
+    </div>
+  );
 };
 
 export const ItemD = () => {

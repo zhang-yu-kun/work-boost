@@ -1,24 +1,19 @@
-import { Breadcrumb, Layout, Menu, type MenuProps } from "antd";
+import { Layout, Menu, type MenuProps } from "antd";
 import Provider from "../../common/Provider";
 import { useEffect, useMemo, useState } from "react";
-import { findPathBFS, type TreeNode } from "../../common/utils";
-import { useLocation, useMatches, useNavigate } from "react-router";
 import type { PublicLayoutIF } from "../../common/types";
-
 const { Header, Content, Sider } = Layout;
-
 type MenuItem = Required<MenuProps>["items"][number];
 
-type breadlist = { title: string };
-
-export default function PubLayout({ menus, bread, children }: PublicLayoutIF) {
+export default function PubLayout({
+  menus,
+  tabsRouter,
+  children,
+  navigate,
+  matches,
+}: PublicLayoutIF) {
   const [siderMenu, setSiderMenu] = useState<MenuItem[]>([]);
-  const [breadList, setBreadList] = useState<breadlist[]>([]);
 
-  //router
-  const nevigate = useNavigate();
-  const matches = useMatches();
-  const location = useLocation();
   const menusFirst = useMemo(
     () =>
       menus?.map((item: any) => ({
@@ -34,16 +29,6 @@ export default function PubLayout({ menus, bread, children }: PublicLayoutIF) {
       getSecondMenu(key);
     }
   }, [matches]);
-
-  useEffect(() => {
-    const path = location.pathname;
-    const allPathToBread = findPathBFS(menus as TreeNode[], path).map(
-      (item) => ({
-        title: item.label,
-      })
-    );
-    setBreadList(allPathToBread);
-  }, [location]);
 
   //获取二级菜单列表
   const getSecondMenu = (key: string) => {
@@ -82,7 +67,7 @@ export default function PubLayout({ menus, bread, children }: PublicLayoutIF) {
               mode="horizontal"
               items={menusFirst}
               style={{ flex: 1, minWidth: 0, background: "#fefefe" }}
-              onSelect={({ key }) => nevigate(key)}
+              onSelect={({ key }) => navigate(key)}
             />
           </Header>
           <Layout>
@@ -97,16 +82,13 @@ export default function PubLayout({ menus, bread, children }: PublicLayoutIF) {
                       "linear-gradient(to bottom,#fff, #F0F0F0,#E7EDF6)",
                   }}
                   items={siderMenu}
-                  onSelect={({ key }) => nevigate(key)}
+                  onSelect={({ key }) => navigate(key)}
                 />
               </Sider>
             )}
 
             <Layout style={{ padding: "0 24px 24px" }}>
-              {bread && (
-                <Breadcrumb items={breadList} style={{ margin: "16px 0" }} />
-              )}
-
+              {tabsRouter}
               <Content>{children}</Content>
             </Layout>
           </Layout>
