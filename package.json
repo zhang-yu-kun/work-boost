@@ -1,11 +1,21 @@
 {
   "name": "work-boost",
   "private": false,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "main": "./dist/work-boost.umd.js",
   "module": "./dist/work-boost.es.js",
   "types": "./dist/index.d.ts",
+  "export": {
+    ".": {
+      "import": "./dist/work-boost.es.js",
+      "require": "./dist/work-boost.umd.js"
+    },
+    "./antd": {
+      "import": "./dist/antd.es.js",
+      "require": "./dist/antd.umd.js"
+    }
+  },
   "files": [
     "dist/",
     "README.md",

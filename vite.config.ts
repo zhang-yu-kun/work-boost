@@ -20,7 +20,8 @@ export default defineConfig({
         antd: "./src/common/antd.ts",
       },
       name: "work-boost",
-      fileName: (format) => `work-boost.${format}.js`,
+      fileName: (format, entryName) =>
+        entryName === "index" ? `work-boost.${format}.js` : `antd.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom"],
