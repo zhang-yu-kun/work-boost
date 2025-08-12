@@ -1,99 +1,75 @@
-import { Layout, Menu, type MenuProps } from "antd";
+import { Layout, Menu } from "antd";
 import Provider from "../../common/Provider";
-import { useEffect, useMemo, useState } from "react";
 import type { PublicLayoutIF } from "../../common/types";
+
 const { Header, Content, Sider } = Layout;
-type MenuItem = Required<MenuProps>["items"][number];
 
 export default function PubLayout({
-  menus,
-  tabsRouter,
+  menus = [],
+  TabsContent,
+  HeaderContent,
+  LogoContent,
   children,
   navigate,
-  matches,
 }: PublicLayoutIF) {
-  const [siderMenu, setSiderMenu] = useState<MenuItem[]>([]);
-
-  const menusFirst = useMemo(
-    () =>
-      menus?.map((item: any) => ({
-        key: item.key,
-        label: item.label,
-      })),
-    [menus]
-  );
-
-  useEffect(() => {
-    if (matches.length > 1) {
-      const key = matches[1].pathname;
-      getSecondMenu(key);
-    }
-  }, [matches]);
-
-  //获取二级菜单列表
-  const getSecondMenu = (key: string) => {
-    // 使用可选链查找菜单项
-    const siderMenu = menus?.find((item) => item?.key === key);
-    if (!siderMenu) {
-      setSiderMenu([]);
-      return;
-    }
-    if ("children" in siderMenu) {
-      setSiderMenu(siderMenu.children as MenuItem[]);
-    } else {
-      setSiderMenu([]);
-    }
-  };
   return (
     <Provider>
-      <div>
-        <Layout
-          style={{
-            height: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            margin: "0",
-          }}
-        >
-          <Header
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <div className="demo-logo" />
-            <Menu
+      <Layout
+        style={{
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          margin: "0",
+        }}
+      >
+        <Layout>
+          {menus?.length > 0 && (
+            <Sider
               theme="light"
-              mode="horizontal"
-              items={menusFirst}
-              style={{ flex: 1, minWidth: 0, background: "#fefefe" }}
-              onSelect={({ key }) => navigate(key)}
-            />
-          </Header>
-          <Layout>
-            {siderMenu.length > 0 && (
-              <Sider theme="light" width={200}>
-                <Menu
-                  mode="inline"
-                  style={{
-                    height: "100%",
+              width={200}
+              style={{
+                height: "100%",
+                background: "linear-gradient(to bottom,#fff, #F0F0F0,#E7EDF6)",
+              }}
+            >
+              <div style={{ height: 64 }}>{LogoContent}</div>
+              <Menu
+                mode="inline"
+                style={{
+                  height: "100%",
+                  background:
+                    "linear-gradient(to bottom,#fff, #F0F0F0,#E7EDF6)",
+                }}
+                items={menus}
+                onSelect={({ key }) => navigate(key)}
+              />
+            </Sider>
+          )}
 
-                    background:
-                      "linear-gradient(to bottom,#fff, #F0F0F0,#E7EDF6)",
-                  }}
-                  items={siderMenu}
-                  onSelect={({ key }) => navigate(key)}
-                />
-              </Sider>
+          <Layout style={{ padding: "0 12px 12px" }}>
+            <Header
+              style={{
+                background:
+                  "radial-gradient(circle at center, #E7EDF629,#FDFDFD,#fff )",
+              }}
+            >
+              {HeaderContent}
+            </Header>
+            {TabsContent && (
+              <div
+                style={{
+                  borderBottom: "1px solid #e8e8e8",
+                  margin: "8px 0",
+                  padding: "0 12px",
+                }}
+              >
+                {TabsContent}
+              </div>
             )}
-
-            <Layout style={{ padding: "0 24px 24px" }}>
-              {tabsRouter}
-              <Content>{children}</Content>
-            </Layout>
+            <Content>{children}</Content>
           </Layout>
         </Layout>
-      </div>
+      </Layout>
     </Provider>
   );
 }

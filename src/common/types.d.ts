@@ -1,6 +1,5 @@
 import type { TableProps, MenuProps, FormInstance, ButtonProps } from "antd";
-import { ComponentType, ReactNode } from "react";
-import type { Location, UIMatch, Path } from "react-router";
+import { ComponentType, ReactElement, ReactNode } from "react";
 
 // 定义一个接口，用于描述表格的公共属性和方法的类型。
 export interface PublicTableIF extends TableProps {
@@ -96,8 +95,10 @@ export interface PublicLayoutIF {
   menus: MenuProps["items"];
   tabsRouter?: ReactNode;
   navigate: (path: string) => void;
-  matches: UIMatch[];
   children?: React.ReactNode;
+  TabsContent?: ReactElement;
+  HeaderContent?: ReactElement;
+  LogoContent?: ReactElement;
 }
 
 //
