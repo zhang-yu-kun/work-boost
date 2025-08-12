@@ -17,7 +17,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: "./src/index.ts",
-        antd: ".src/common/antd.ts",
+        antd: "./src/common/antd.ts",
       },
       name: "work-boost",
       fileName: (format) => `work-boost.${format}.js`,
