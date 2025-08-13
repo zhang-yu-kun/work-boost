@@ -3,7 +3,7 @@ import { form_column_map, form_offset_config_map } from "../../common/constant";
 import type { PublicFormIF, OptionItemIF } from "../../common/types";
 import Provider from "../../common/Provider";
 
-export default function PubForm({
+const PubForm: React.FC<PublicFormIF> = ({
   form,
   name,
   options,
@@ -11,7 +11,7 @@ export default function PubForm({
   column = 2,
   formlayout = { labelCol: { span: 8 }, wrapperCol: { span: 16 } },
   children,
-}: PublicFormIF) {
+}) => {
   const offset = (): number => {
     const { map, length } = form_offset_config_map[column];
     const index = options.length % length;
@@ -72,4 +72,6 @@ export default function PubForm({
       </Form>
     </Provider>
   );
-}
+};
+
+export default PubForm;

@@ -4,12 +4,12 @@ import type { PublicSearchIF } from "../../common/types";
 import Provider from "../../common/Provider";
 import { useState, useEffect } from "react";
 
-export default function PubSearch({
+const PubSearch: React.FC<PublicSearchIF> = ({
   form,
   options,
   onFinish,
   collapse = false,
-}: PublicSearchIF) {
+}) => {
   const [collapsed, setCollapsed] = useState(true);
   const [list, setList] = useState(options);
   useEffect(() => {
@@ -63,4 +63,5 @@ export default function PubSearch({
       </div>
     </Provider>
   );
-}
+};
+export default PubSearch;

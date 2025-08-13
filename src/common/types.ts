@@ -22,7 +22,7 @@ export interface RowIF {
   rowKey?: string; // 行键值
   rowSelects?: React.Key[];
   setRowSelects?: (rowKey: React.Key[]) => React.Key[]; // 设置选中行键值的方法
-  setRowSelectsInfo?: (any) => void; // 设置选中行记录的方法
+  setRowSelectsInfo?: (value: any) => void; // 设置选中行记录的方法
 }
 
 export interface HeaderIF {
@@ -40,7 +40,7 @@ export interface PublicFormIF {
   form: FormInstance;
   name: string;
   options: OptionItemIF[];
-  onFinish: (value) => void;
+  onFinish: (value: any) => void;
   formlayout?: {
     labelCol?: {
       span: number;
@@ -53,7 +53,7 @@ export interface PublicFormIF {
   children?: React.ReactNode;
 }
 
-interface OptionItemIF {
+export interface OptionItemIF {
   component: React.ReactNode;
   isFlex?: boolean;
   label?: string;
@@ -66,7 +66,7 @@ interface OptionItemIF {
 // export type OptionItemIF = FlexOptionItemIF | DefaultOptionItemIF;
 
 //定义搜索组件的公共属性和方法的类型
-interface PublicSearchIF {
+export interface PublicSearchIF {
   form: FormInstance;
   options: OptionItemIF[];
   onFinish: any;
@@ -78,7 +78,7 @@ export interface PublicStepFormIF {
   form: FormInstance;
   steps: { title: string; options: OptionItemIF[] }[];
   onPrev: () => void;
-  onNext: (value) => void;
+  onNext: (value: any) => void;
   formlayout?: {
     labelCol?: {
       span: number;
@@ -107,6 +107,6 @@ export interface PubLoginFormIF {
   theme: "techno" | "natural" | "fire";
   signInConent: { label: string; field: string }[];
   signUpContent: { label: string; field: string }[];
-  onSubmit: (value) => void;
+  onSubmit: (value: any) => void;
   onForgetPassword: () => void;
 }

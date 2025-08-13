@@ -16,22 +16,24 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        index: "./src/index.ts",
-        antd: "./src/common/antd.ts",
+        "work-boost": "./src/index.ts",
+        antd: "./src/antd.ts",
       },
       name: "work-boost",
       fileName: (format, entryName) =>
-        entryName === "index" ? `work-boost.${format}.js` : `antd.${format}.js`,
+        entryName === "antd" ? `antd.${format}.js` : `work-boost.${format}.js`,
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "antd"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          antd: "antd",
         },
       },
     },
+
     cssCodeSplit: true,
   },
   css: {

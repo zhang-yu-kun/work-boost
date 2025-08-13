@@ -4,13 +4,12 @@ type itmeForMap = {
   large: { box: any; span: any };
 };
 
-export default function PubTitle({
-  text,
-  size,
-}: {
+type PublicTitleProps = {
   text?: string;
   size?: "small" | "middle" | "large";
-}) {
+};
+
+const PubTitle: React.FC<PublicTitleProps> = ({ text, size }) => {
   const map: itmeForMap = {
     small: {
       box: {
@@ -68,4 +67,6 @@ export default function PubTitle({
       {text}
     </div>
   );
-}
+};
+
+export default PubTitle;

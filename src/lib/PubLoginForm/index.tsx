@@ -11,14 +11,14 @@ const center = {
   alignItems: "center",
 };
 
-export default function PubLoginForm({
+const PubLoginForm: React.FC<PubLoginFormIF> = ({
   form,
   theme,
   signInConent,
   signUpContent,
   onSubmit,
   onForgetPassword,
-}: PubLoginFormIF) {
+}) => {
   const [activePanel, setActivePanel] = useState(false);
 
   // 切换注册登录面板的逻辑
@@ -168,4 +168,6 @@ export default function PubLoginForm({
       </div>
     </ConfigProvider>
   );
-}
+};
+
+export default PubLoginForm;

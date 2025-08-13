@@ -4,7 +4,7 @@ import type { PublicStepFormIF, OptionItemIF } from "../../common/types";
 import { useState, useMemo } from "react";
 import { Steps, Button, Form, Row, Col } from "antd";
 
-export default function PubStepForm(props: PublicStepFormIF) {
+const PubStepForm: React.FC<PublicStepFormIF> = (props) => {
   const { form, steps, onPrev, onNext, formlayout, column = 1 } = props;
   const [current, setCurrent] = useState(0);
   const stepItem = steps.map(
@@ -84,4 +84,6 @@ export default function PubStepForm(props: PublicStepFormIF) {
       </Form>
     </Provider>
   );
-}
+};
+
+export default PubStepForm;

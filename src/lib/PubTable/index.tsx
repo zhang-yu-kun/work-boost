@@ -9,7 +9,7 @@ import type {
 } from "../../common/types";
 import PubTitle from "../PubTitle";
 
-const PubTable = ({
+const PubTable: React.FC<PublicTableIF> = ({
   data,
   columns,
   pageOption,
@@ -17,7 +17,7 @@ const PubTable = ({
   tableChange,
   header,
   loading = false,
-}: PublicTableIF) => {
+}) => {
   const {
     isShow = true,
     tableTitle = "查询列表",
