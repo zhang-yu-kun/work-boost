@@ -20,48 +20,41 @@ const PubSearch: React.FC<PublicSearchIF> = ({
     }
   }, [collapse, collapsed, options]);
   return (
-    <Provider>
-      <div
-        style={{ padding: "12px 22px", background: "#fff", borderRadius: 8 }}
+    <div style={{ padding: "12px 22px", background: "#fff", borderRadius: 8 }}>
+      <PubForm
+        form={form}
+        name="search"
+        options={list}
+        onFinish={onFinish}
+        column={4}
+        formlayout={{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
       >
-        <PubForm
-          form={form}
-          name="search"
-          options={list}
-          onFinish={onFinish}
-          column={4}
-          formlayout={{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
+        <div
+          data-testid="buttons"
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+          }}
         >
-          <div
-            data-testid="buttons"
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "center",
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              查询
-            </Button>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+          <Button onClick={() => form.resetFields()} style={{ marginLeft: 8 }}>
+            重置
+          </Button>
+          {collapse && options.length > 7 && (
             <Button
-              onClick={() => form.resetFields()}
-              style={{ marginLeft: 8 }}
+              type="link"
+              onClick={() => setCollapsed(!collapsed)}
+              data-testid="collapsed"
             >
-              重置
+              {collapsed ? "展开" : "收起"}
             </Button>
-            {collapse && options.length > 7 && (
-              <Button
-                type="link"
-                onClick={() => setCollapsed(!collapsed)}
-                data-testid="collapsed"
-              >
-                {collapsed ? "展开" : "收起"}
-              </Button>
-            )}
-          </div>
-        </PubForm>
-      </div>
-    </Provider>
+          )}
+        </div>
+      </PubForm>
+    </div>
   );
 };
 export default PubSearch;

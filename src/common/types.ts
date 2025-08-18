@@ -93,7 +93,6 @@ export interface PublicStepFormIF {
 //布局组件的公共属性和方法的类型
 export interface PublicLayoutIF {
   menus: MenuProps["items"];
-  tabsRouter?: ReactNode;
   navigate: (path: string) => void;
   children?: React.ReactNode;
   TabsContent?: ReactElement;

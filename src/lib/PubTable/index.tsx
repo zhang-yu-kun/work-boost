@@ -62,63 +62,61 @@ const PubTable: React.FC<PublicTableIF> = ({
   };
 
   return (
-    <Provider>
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 8,
-          marginTop: 24,
-          padding: "12px 22px 32px",
-        }}
-      >
-        {isShow && (
+    <div
+      style={{
+        background: "#fff",
+        borderRadius: 8,
+        marginTop: 24,
+        padding: "12px 22px 32px",
+      }}
+    >
+      {isShow && (
+        <div
+          style={{
+            height: 52,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <PubTitle text={tableTitle} />
           <div
             style={{
-              height: 52,
+              width: "50%",
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              justifyContent: "flex-end",
             }}
           >
-            <PubTitle text={tableTitle} />
-            <div
-              style={{
-                width: "50%",
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              {HeaderRender?.map((item, index: number) => (
-                <Button
-                  key={index}
-                  type={item.type || "default"}
-                  htmlType={item.htmlType || "button"}
-                  style={{ marginLeft: 8 }}
-                >
-                  {item.text}
-                </Button>
-              ))}
-            </div>
+            {HeaderRender?.map((item, index: number) => (
+              <Button
+                key={index}
+                type={item.type || "default"}
+                htmlType={item.htmlType || "button"}
+                style={{ marginLeft: 8 }}
+              >
+                {item.text}
+              </Button>
+            ))}
           </div>
-        )}
-        <Table
-          dataSource={data}
-          columns={columns}
-          rowSelection={
-            rowOption !== undefined
-              ? {
-                  selectedRowKeys: rowSelects,
-                  onChange: onSelectChange,
-                  preserveSelectedRowKeys: true,
-                }
-              : undefined
-          }
-          pagination={setPagination()}
-          onChange={onChange}
-          loading={loading}
-        />
-      </div>
-    </Provider>
+        </div>
+      )}
+      <Table
+        dataSource={data}
+        columns={columns}
+        rowSelection={
+          rowOption !== undefined
+            ? {
+                selectedRowKeys: rowSelects,
+                onChange: onSelectChange,
+                preserveSelectedRowKeys: true,
+              }
+            : undefined
+        }
+        pagination={setPagination()}
+        onChange={onChange}
+        loading={loading}
+      />
+    </div>
   );
 };
 

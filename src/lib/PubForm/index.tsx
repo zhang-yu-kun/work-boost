@@ -19,58 +19,56 @@ const PubForm: React.FC<PublicFormIF> = ({
   };
 
   return (
-    <Provider>
-      <Form
-        name={name}
-        form={form}
-        onFinish={onFinish}
-        {...formlayout}
-        style={{ width: "100%" }}
-        clearOnDestroy
-      >
-        <Row gutter={16}>
-          {options?.map((item: OptionItemIF, index) => {
-            if (item.isFlex) {
-              return (
-                <Col
-                  style={{ marginTop: 12, marginBottom: 12 }}
-                  span={form_column_map[column]}
-                  key={index}
-                >
-                  {item.component}
-                </Col>
-              );
-            }
+    <Form
+      name={name}
+      form={form}
+      onFinish={onFinish}
+      {...formlayout}
+      style={{ width: "100%" }}
+      clearOnDestroy
+    >
+      <Row gutter={16}>
+        {options?.map((item: OptionItemIF, index) => {
+          if (item.isFlex) {
             return (
               <Col
                 style={{ marginTop: 12, marginBottom: 12 }}
                 span={form_column_map[column]}
-                key={item.field}
+                key={index}
               >
-                <Form.Item
-                  label={item.label}
-                  name={item.field}
-                  rules={item.rules}
-                  labelCol={item.labelCol}
-                  wrapperCol={item.wrapperCol}
-                >
-                  {item.component}
-                </Form.Item>
+                {item.component}
               </Col>
             );
-          })}
-          {children && (
+          }
+          return (
             <Col
               style={{ marginTop: 12, marginBottom: 12 }}
               span={form_column_map[column]}
-              offset={offset()}
+              key={item.field}
             >
-              {children}
+              <Form.Item
+                label={item.label}
+                name={item.field}
+                rules={item.rules}
+                labelCol={item.labelCol}
+                wrapperCol={item.wrapperCol}
+              >
+                {item.component}
+              </Form.Item>
             </Col>
-          )}
-        </Row>
-      </Form>
-    </Provider>
+          );
+        })}
+        {children && (
+          <Col
+            style={{ marginTop: 12, marginBottom: 12 }}
+            span={form_column_map[column]}
+            offset={offset()}
+          >
+            {children}
+          </Col>
+        )}
+      </Row>
+    </Form>
   );
 };
 
