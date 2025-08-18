@@ -5,7 +5,7 @@ export default function Provider({
   theme,
   children,
 }: {
-  theme: ThemeConfig;
+  theme?: ThemeConfig;
   children: React.ReactNode;
 }) {
   return (
