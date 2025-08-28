@@ -16,7 +16,8 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
   theme,
   signInConent,
   signUpContent,
-  onSubmit,
+  onSignIn,
+  onSignUp,
   onForgetPassword,
 }) => {
   const [activePanel, setActivePanel] = useState(false);
@@ -100,7 +101,7 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             form={form}
             name="signUp"
             className={style.signUp}
-            onFinish={onSubmit}
+            onFinish={onSignUp}
           >
             {" "}
             <p className={style.title}>注册</p>
@@ -121,7 +122,7 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             form={form}
             name="sigIn"
             className={style.signIn}
-            onFinish={onSubmit}
+            onFinish={onSignIn}
           >
             {" "}
             <p className={style.title}>登录</p>

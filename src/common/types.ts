@@ -106,6 +106,7 @@ export interface PubLoginFormIF {
   theme: "techno" | "natural" | "fire";
   signInConent: { label: string; field: string }[];
   signUpContent: { label: string; field: string }[];
-  onSubmit: (value: any) => void;
+  onSignIn: (value: any) => void;
+  onSignUp: (value: any) => void;
   onForgetPassword: () => void;
 }
