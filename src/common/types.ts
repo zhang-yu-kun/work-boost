@@ -32,6 +32,7 @@ export interface HeaderIF {
     type?: ButtonProps["type"];
     htmlType?: ButtonProps["htmlType"];
     text: string;
+    onClick: () => void;
   }[];
 }
 

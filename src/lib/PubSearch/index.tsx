@@ -1,7 +1,6 @@
 import PubForm from "../PubForm";
 import { Button } from "antd";
 import type { PublicSearchIF } from "../../common/types";
-import Provider from "../../common/Provider";
 import { useState, useEffect } from "react";
 
 const PubSearch: React.FC<PublicSearchIF> = ({

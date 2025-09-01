@@ -1,5 +1,4 @@
 import { Button, Table } from "antd";
-import Provider from "../../common/Provider";
 import type { TablePaginationConfig } from "antd";
 import type {
   PublicTableIF,
@@ -93,6 +92,7 @@ const PubTable: React.FC<PublicTableIF> = ({
                 type={item.type || "default"}
                 htmlType={item.htmlType || "button"}
                 style={{ marginLeft: 8 }}
+                onClick={item.onClick}
               >
                 {item.text}
               </Button>

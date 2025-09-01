@@ -1,7 +1,6 @@
 import { Form, Row, Col } from "antd";
 import { form_column_map, form_offset_config_map } from "../../common/constant";
 import type { PublicFormIF, OptionItemIF } from "../../common/types";
-import Provider from "../../common/Provider";
 
 const PubForm: React.FC<PublicFormIF> = ({
   form,
