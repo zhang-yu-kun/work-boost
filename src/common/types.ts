@@ -105,9 +105,8 @@ export interface PublicLayoutIF {
 export interface PubLoginFormIF {
   form: FormInstance;
   theme: "techno" | "natural" | "fire";
-  signInConent: { label: string; field: string }[];
+  signInContent: { label: string; field: string }[];
   signUpContent: { label: string; field: string }[];
-  onSignIn: (value: any) => void;
-  onSignUp: (value: any) => void;
+  onSubmit: (value: any, type: "signIn" | "signUp") => void;
   onForgetPassword: () => void;
 }
