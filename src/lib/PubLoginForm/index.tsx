@@ -105,7 +105,11 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             <div>
               {signUpContent?.map((item: { label: string; field: string }) => (
                 <Form.Item name={item.field} key={item.field}>
-                  <Input placeholder={item.label} />
+                  {item.field === "password" ? (
+                    <Input.Password placeholder={item.label} />
+                  ) : (
+                    <Input placeholder={item.label} />
+                  )}
                 </Form.Item>
               ))}
             </div>
@@ -121,12 +125,15 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             className={style.signIn}
             onFinish={(v) => onSubmit(v, "signIn")}
           >
-            {" "}
             <p className={style.title}>登录</p>
             <div>
               {signInContent?.map((item: { label: string; field: string }) => (
                 <Form.Item name={item.field} key={item.field}>
-                  <Input placeholder={item.label} />
+                  {item.field === "password" ? (
+                    <Input.Password placeholder={item.label} />
+                  ) : (
+                    <Input placeholder={item.label} />
+                  )}
                 </Form.Item>
               ))}
             </div>
