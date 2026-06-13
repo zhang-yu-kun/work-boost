@@ -12,7 +12,6 @@ const center = {
 };
 
 const PubLoginForm: React.FC<PubLoginFormIF> = ({
-  form,
   theme,
   signInContent,
   signUpContent,
@@ -20,14 +19,10 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
   onForgetPassword,
 }) => {
   const [activePanel, setActivePanel] = useState(false);
-
+  const [signInForm] = Form.useForm();
+  const [signUpForm] = Form.useForm();
   // 切换注册登录面板的逻辑
   const handleClick = (toRegister: boolean) => {
-    // 离开当前面板时，重置当前面板的字段
-    const currentPrefix = activePanel ? "signUp" : "signIn";
-    form.setFieldsValue({ [currentPrefix]: undefined }); // 清空当前面板所有字段
-    // 或者用 resetFields 但指定路径范围（需要遍历）
-    // 更简单：不清空，因为用户切换回来还想继续填，但你可能希望清空
     setActivePanel(toRegister);
   };
 
@@ -101,16 +96,15 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
       <div className={style.loginTechno}>
         <div className={rightActiveClass}>
           <Form
-            form={form}
+            form={signUpForm}
             name="signUp"
             className={style.signUp}
-            onFinish={(v) => onSubmit(v.signUp, "signUp")}
+            onFinish={(v) => onSubmit(v, "signUp")}
           >
-            {" "}
             <p className={style.title}>注册</p>
             <div>
               {signUpContent?.map((item: { label: string; field: string }) => (
-                <Form.Item name={["signUp", item.field]} key={item.field}>
+                <Form.Item name={item.field} key={item.field}>
                   <Input placeholder={item.label} />
                 </Form.Item>
               ))}
@@ -122,16 +116,16 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             </div>
           </Form>
           <Form
-            form={form}
+            form={signInForm}
             name="signIn"
             className={style.signIn}
-            onFinish={(v) => onSubmit(v.signIn, "signIn")}
+            onFinish={(v) => onSubmit(v, "signIn")}
           >
             {" "}
             <p className={style.title}>登录</p>
             <div>
               {signInContent?.map((item: { label: string; field: string }) => (
-                <Form.Item name={["signIn", item.field]} key={item.field}>
+                <Form.Item name={item.field} key={item.field}>
                   <Input placeholder={item.label} />
                 </Form.Item>
               ))}
@@ -149,9 +143,7 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
             </div>
           </Form>
           <div className={style.overlayContainer}>
-            {" "}
             <div className={overlayStyle}>
-              {" "}
               <div className={style.overlayLeft}>
                 <h1>欢迎回来! </h1>
                 <p>已有账号,填写个人信息进行登录</p>

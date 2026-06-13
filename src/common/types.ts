@@ -103,7 +103,6 @@ export interface PublicLayoutIF {
 
 //
 export interface PubLoginFormIF {
-  form: FormInstance;
   theme: "techno" | "natural" | "fire";
   signInContent: { label: string; field: string }[];
   signUpContent: { label: string; field: string }[];
