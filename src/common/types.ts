@@ -101,11 +101,12 @@ export interface PublicLayoutIF {
   LogoContent?: ReactElement;
 }
 
+type signTy = "input" | "password";
 //
 export interface PubLoginFormIF {
   theme: "techno" | "natural" | "fire";
-  signInContent: { label: string; field: string }[];
-  signUpContent: { label: string; field: string }[];
+  signInContent: { label: string; field: string; type: signTy }[];
+  signUpContent: { label: string; field: string; type: signTy }[];
   onSubmit: (value: any, type: "signIn" | "signUp") => void;
   onForgetPassword: () => void;
 }

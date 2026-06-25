@@ -103,9 +103,9 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
           >
             <p className={style.title}>注册</p>
             <div>
-              {signUpContent?.map((item: { label: string; field: string }) => (
+              {signUpContent?.map((item) => (
                 <Form.Item name={item.field} key={item.field}>
-                  {item.field === "password" ? (
+                  {item.type === "password" ? (
                     <Input.Password placeholder={item.label} />
                   ) : (
                     <Input placeholder={item.label} />
@@ -127,9 +127,9 @@ const PubLoginForm: React.FC<PubLoginFormIF> = ({
           >
             <p className={style.title}>登录</p>
             <div>
-              {signInContent?.map((item: { label: string; field: string }) => (
+              {signInContent?.map((item) => (
                 <Form.Item name={item.field} key={item.field}>
-                  {item.field === "password" ? (
+                  {item.type === "password" ? (
                     <Input.Password placeholder={item.label} />
                   ) : (
                     <Input placeholder={item.label} />
