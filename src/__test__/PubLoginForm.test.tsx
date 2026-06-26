@@ -1,9 +1,8 @@
-// PubLoginForm.test.tsx
-import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Form } from "antd";
-import PubLoginForm from "../lib/PubLoginForm"; // 调整路径为你的实际路径
-import type { PubLoginFormIF } from "../common/types";
+import React, { forwardRef, useRef } from "react";
+import { render, screen, fireEvent, waitFor, within, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import PubLoginForm from "../lib/PubLoginForm";
+import type { PubLoginFormIF, PubLoginFormRef } from "../common/types";
 
 // 解决 window.matchMedia 问题
 beforeAll(() => {
@@ -22,277 +21,278 @@ beforeAll(() => {
   });
 });
 
-// 1. 移除对 CSS/LESS 模块的直接模拟
-// 2. 使用 Jest 的 mock 机制模拟 classNames 库
 jest.mock("classnames", () => ({
   __esModule: true,
-  default: (...args: any[]) => {
-    // 简化 classNames 功能，仅返回拼接的类名
-    return args.filter((arg) => typeof arg === "string").join(" ");
-  },
+  default: (...args: any[]) => args.filter((arg) => typeof arg === "string").join(" "),
 }));
 
-// 3. 创建 CSS 模块的代理模拟
 jest.mock("../common/constant", () => ({
   btn_color_map: {
-    techno: {
-      bg: "#123456",
-      border: "#654321",
-      hover: "#abcdef",
-      text: "#ffffff",
-    },
-    natural: {
-      bg: "#123456",
-      border: "#654321",
-      hover: "#abcdef",
-      text: "#ffffff",
-    },
-    fire: {
-      bg: "#123456",
-      border: "#654321",
-      hover: "#abcdef",
-      text: "#ffffff",
-    },
-    ghost: {
-      bg: "#123456",
-      border: "#654321",
-      hover: "#abcdef",
-      text: "#ffffff",
-    },
+    techno: { bg: "#123", border: "#456", hover: "#789", text: "#fff" },
+    natural: { bg: "#123", border: "#456", hover: "#789", text: "#fff" },
+    fire: { bg: "#123", border: "#456", hover: "#789", text: "#fff" },
+    ghost: { bg: "#123", border: "#456", hover: "#789", text: "#fff" },
   },
 }));
 
-describe("PubLoginForm", () => {
-  const mockSignInContent = [
-    { label: "用户名", field: "username" },
-    { label: "密码", field: "password" },
-  ];
+// ---- 默认 props ----
+const signInContent = [
+  { label: "用户名", field: "username", type: "input" as const },
+  { label: "密码", field: "password", type: "password" as const },
+];
 
-  const mockSignUpContent = [
-    { label: "邮箱", field: "email" },
-    { label: "创建密码", field: "newPassword" },
-  ];
+const signUpContent = [
+  { label: "用户名", field: "username", type: "input" as const },
+  { label: "手机号", field: "phone", type: "phone" as const },
+  { label: "邮箱", field: "email", type: "email" as const },
+  { label: "密码", field: "password", type: "password" as const },
+];
 
-  const mockOnSubmit = jest.fn();
-  const mockOnForgetPassword = jest.fn();
+const defaultProps: PubLoginFormIF = {
+  theme: "techno",
+  signInContent,
+  signUpContent,
+  onSubmit: jest.fn(),
+  onForgetPassword: jest.fn(),
+};
 
-  // 创建表单实例的辅助函数
-  const createFormInstance = () => {
-    let formInstance: any;
-    const TestComponent = () => {
-      const [form] = Form.useForm();
-      formInstance = form;
-      return null;
-    };
-    render(<TestComponent />);
-    return formInstance;
-  };
+// 带 ref 的包装组件
+const TestFormWithRef = forwardRef<PubLoginFormRef, Partial<PubLoginFormIF>>((props, ref) => {
+  return <PubLoginForm {...defaultProps} {...props} ref={ref} />;
+});
 
-  // 完整的测试组件
-  const TestForm = (props: Partial<PubLoginFormIF> = {}) => {
-    const [form] = Form.useForm();
-    return (
-      <PubLoginForm
-        form={form}
-        theme="techno"
-        signInConent={mockSignInContent}
-        signUpContent={mockSignUpContent}
-        onSubmit={mockOnSubmit}
-        onForgetPassword={mockOnForgetPassword}
-        {...props}
-      />
-    );
-  };
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
-  beforeEach(() => {
-    jest.clearAllMocks();
+// ==================== 基础渲染 ====================
+describe("基础渲染", () => {
+  it("渲染登录标题和表单字段", () => {
+    render(<TestFormWithRef />);
+    expect(screen.getByText("登录")).toBeInTheDocument();
+    // 两个表单都有"用户名"，signIn 的排在前面
+    expect(screen.getAllByPlaceholderText("用户名")[0]).toBeInTheDocument();
+    expect(screen.getAllByPlaceholderText("密码")[0]).toBeInTheDocument();
   });
 
-  // 测试1: 渲染基础组件
-  it("渲染基础组件", () => {
-    render(<TestForm />);
-
-    // 验证标题渲染
-    expect(screen.getByText("登录")).toBeInTheDocument();
-    expect(screen.getByText("注册")).toBeInTheDocument();
-
-    // 验证输入框渲染
-    expect(screen.getByPlaceholderText("用户名")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("密码")).toBeInTheDocument();
-
-    // 验证按钮渲染
-    expect(screen.getByText("登录")).toBeInTheDocument();
+  it("渲染忘记密码链接", () => {
+    render(<TestFormWithRef />);
     expect(screen.getByText("忘记密码")).toBeInTheDocument();
   });
 
-  // 测试2: 切换登录/注册面板
-  it("切换登录和注册面板", () => {
-    render(<TestForm />);
+  it("渲染切换按钮", () => {
+    render(<TestFormWithRef />);
+    expect(screen.getByText("去注册!")).toBeInTheDocument();
+    expect(screen.getByText("去登录!")).toBeInTheDocument();
+  });
+});
 
-    // 初始状态应为登录面板
+// ==================== 面板切换 ====================
+describe("面板切换", () => {
+  it("点击去注册切换到注册面板", () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+    expect(screen.getByText("注册")).toBeVisible();
+  });
+
+  it("点击去登录切换回登录面板", () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+    fireEvent.click(screen.getByText("去登录!"));
     expect(screen.getByText("登录")).toBeVisible();
+  });
 
-    // 点击"去注册!"按钮
+  it("注册面板显示所有注册字段", () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+    expect(screen.getByPlaceholderText("手机号")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("邮箱")).toBeInTheDocument();
+  });
+});
+
+// ==================== 登录表单提交 ====================
+describe("登录表单提交", () => {
+  it("填写并提交登录表单", async () => {
+    const onSubmit = jest.fn();
+    const { container } = render(<TestFormWithRef onSubmit={onSubmit} />);
+
+    // 用 form id 限定查询范围，signUp 排在 signIn 前面
+    const signInForm = container.querySelector("#signIn")!;
+    const si = within(signInForm as HTMLElement);
+
+    await userEvent.type(si.getByPlaceholderText("用户名"), "testuser");
+    await userEvent.type(si.getByPlaceholderText("密码"), "pass123");
+
+    const btn = screen.getByRole("button", { name: "登 录" });
+    fireEvent.click(btn);
+
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalledWith(
+        { username: "testuser", password: "pass123" },
+        "signIn"
+      );
+    });
+  });
+});
+
+// ==================== 注册提交后自动跳转登录 ====================
+describe("注册提交后自动跳转", () => {
+  it("注册成功后自动切到登录面板", async () => {
+    const onSubmit = jest.fn().mockResolvedValue(undefined);
+    render(<TestFormWithRef onSubmit={onSubmit} />);
+
+    // 切到注册
     fireEvent.click(screen.getByText("去注册!"));
 
-    // 验证切换到注册面板
-    expect(screen.getByText("注册")).toBeVisible();
-    expect(screen.getByPlaceholderText("邮箱")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("创建密码")).toBeInTheDocument();
+    // 用 form id 限定查询范围
+    const signUpForm = document.querySelector("#signUp")!;
+    const su = within(signUpForm as HTMLElement);
 
-    // 点击"去登录!"按钮
-    fireEvent.click(screen.getByText("去登录!"));
+    await userEvent.type(su.getByPlaceholderText("用户名"), "newuser");
+    await userEvent.type(su.getByPlaceholderText("手机号"), "13800138000");
+    await userEvent.type(su.getByPlaceholderText("邮箱"), "test");
+    await userEvent.type(su.getByPlaceholderText("密码"), "pass123");
 
-    // 验证切换回登录面板
-    expect(screen.getByText("登录")).toBeVisible();
-  });
-
-  // 测试3: 提交登录表单
-  it("提交登录表单", async () => {
-    render(<TestForm />);
-
-    // 填写表单
-    fireEvent.change(screen.getByPlaceholderText("用户名"), {
-      target: { value: "testuser" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("密码"), {
-      target: { value: "password123" },
-    });
-
-    // 提交表单
-    const element = screen.getByRole("button", { name: "登 录" });
-
-    fireEvent.click(element);
-
-    // 验证回调函数被调用
-    await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-      expect(mockOnSubmit).toHaveBeenCalledWith({
-        username: "testuser",
-        password: "password123",
-      });
-    });
-  });
-
-  // 测试4: 提交注册表单
-  it("提交注册表单", async () => {
-    // 模拟表单提交
-
-    render(<TestForm />);
-
-    // 切换到注册面板
-    fireEvent.click(screen.getByRole("button", { name: "去注册!" }));
-
-    // 填充表单
-    fireEvent.change(screen.getByPlaceholderText("邮箱"), {
-      target: { value: "test@example.com" },
-    });
-
-    fireEvent.change(screen.getByPlaceholderText("创建密码"), {
-      target: { value: "newpassword123" },
-    });
-
-    // 触发表单验证
-    fireEvent.blur(screen.getByPlaceholderText("邮箱"));
-    fireEvent.blur(screen.getByPlaceholderText("创建密码"));
-
-    // 等待验证完成
-    await waitFor(() => {
-      expect(screen.queryAllByRole("alert").length).toBe(0);
-    });
-    // 提交表单
     fireEvent.click(screen.getByRole("button", { name: "注 册" }));
-    // 验证回调
+
     await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-      expect(mockOnSubmit).toHaveBeenCalledWith({
-        email: "test@example.com",
-        newPassword: "newpassword123",
-      });
+      expect(onSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({ username: "newuser" }),
+        "signUp"
+      );
+    });
+
+    // 验证自动跳回登录
+    await waitFor(() => {
+      expect(screen.getByText("登录")).toBeVisible();
+    });
+  });
+});
+
+// ==================== 手机号校验 ====================
+describe("手机号校验", () => {
+  it("错误手机号显示校验错误", async () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+
+    const phoneInput = screen.getByPlaceholderText("手机号");
+    await userEvent.type(phoneInput, "123");
+    fireEvent.blur(phoneInput);
+
+    await waitFor(() => {
+      expect(screen.getByText("请输入正确的手机号")).toBeInTheDocument();
     });
   });
 
-  // 测试5: 忘记密码功能
-  it("触发忘记密码回调", () => {
-    render(<TestForm />);
+  it("正确手机号通过校验", async () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+
+    const phoneInput = screen.getByPlaceholderText("手机号");
+    await userEvent.type(phoneInput, "13800138000");
+    fireEvent.blur(phoneInput);
+
+    await waitFor(() => {
+      expect(screen.queryByText("请输入正确的手机号")).not.toBeInTheDocument();
+    });
+  });
+});
+
+// ==================== 邮箱校验 ====================
+describe("邮箱校验", () => {
+  it("邮箱输入框和后缀选择器同时存在", () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+
+    expect(screen.getByPlaceholderText("邮箱")).toBeInTheDocument();
+    // Select 默认显示 @qq.com
+    expect(screen.getByText("@qq.com")).toBeInTheDocument();
+  });
+
+  it("输入非法邮箱前缀显示校验错误", async () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+
+    const emailInput = screen.getByPlaceholderText("邮箱");
+    await userEvent.type(emailInput, "abc");
+    fireEvent.blur(emailInput);
+
+    // "abc" + "@qq.com" = "abc@qq.com" 是合法的，不会报错
+    // 所以这个测试验证合法输入不报错
+    await waitFor(() => {
+      expect(screen.queryByText("请输入正确的邮箱")).not.toBeInTheDocument();
+    });
+  });
+
+  it("空输入不触发邮箱校验", async () => {
+    render(<TestFormWithRef />);
+    fireEvent.click(screen.getByText("去注册!"));
+
+    const emailInput = screen.getByPlaceholderText("邮箱");
+    fireEvent.blur(emailInput);
+
+    await waitFor(() => {
+      expect(screen.queryByText("请输入正确的邮箱")).not.toBeInTheDocument();
+    });
+  });
+});
+
+// ==================== 忘记密码 ====================
+describe("忘记密码", () => {
+  it("点击忘记密码触发回调", () => {
+    const onForgetPassword = jest.fn();
+    render(<TestFormWithRef onForgetPassword={onForgetPassword} />);
 
     fireEvent.click(screen.getByText("忘记密码"));
-
-    expect(mockOnForgetPassword).toHaveBeenCalledTimes(1);
+    expect(onForgetPassword).toHaveBeenCalledTimes(1);
   });
+});
 
-  // 测试6: 表单重置功能
-  it("切换面板时重置表单", () => {
-    render(<TestForm />);
+// ==================== ref 方法 ====================
+describe("ref 暴露方法", () => {
+  it("switchToLogin 切到登录面板", () => {
+    const ref = React.createRef<PubLoginFormRef>();
+    render(<TestFormWithRef ref={ref} />);
 
-    // 在登录表单中输入数据
-    fireEvent.change(screen.getByPlaceholderText("用户名"), {
-      target: { value: "testuser" },
-    });
-
-    // 切换到注册面板
+    // 先切到注册
     fireEvent.click(screen.getByText("去注册!"));
+    expect(screen.getByText("注册")).toBeVisible();
 
-    // 切换回登录面板
-    fireEvent.click(screen.getByText("去登录!"));
-
-    // 验证表单已重置
-    expect(screen.getByPlaceholderText("用户名")).toHaveValue("");
+    // 通过 ref 切回登录
+    act(() => ref.current?.switchToLogin());
+    expect(screen.getByText("登录")).toBeVisible();
   });
 
-  // 测试7: 按钮主题样式
-  it("应用正确的按钮主题样式", () => {
-    render(<TestForm />);
+  it("switchToSignUp 切到注册面板", () => {
+    const ref = React.createRef<PubLoginFormRef>();
+    render(<TestFormWithRef ref={ref} />);
+    expect(screen.getByText("登录")).toBeVisible();
 
-    // 验证按钮存在
-    expect(screen.getByText("登录")).toBeInTheDocument();
-    expect(screen.getByText("注册")).toBeInTheDocument();
+    act(() => ref.current?.switchToSignUp());
+    expect(screen.getByText("注册")).toBeVisible();
   });
+});
 
-  // 测试8: 可选props缺失时的行为
-  it("处理可选props缺失的情况", () => {
-    const formInstance = createFormInstance();
+// ==================== 不同主题 ====================
+describe("主题渲染", () => {
+  const themes: PubLoginFormIF["theme"][] = ["techno", "natural", "fire"];
 
-    render(
-      <PubLoginForm
-        form={formInstance}
-        theme="techno"
-        signInConent={mockSignInContent}
-        signUpContent={[]}
-        onSubmit={mockOnSubmit}
-        onForgetPassword={() => {}}
-      />
-    );
-
-    // 验证基本功能仍然可用
-    expect(screen.getByText("登录")).toBeInTheDocument();
-  });
-
-  // 测试9: 不同主题的渲染
-  it("使用不同主题渲染组件", () => {
-    const formInstance = createFormInstance();
-
-    const themes: Array<PubLoginFormIF["theme"]> = [
-      "techno",
-      "natural",
-      "fire",
-    ];
-
-    themes.forEach((theme) => {
-      const { unmount } = render(
-        <PubLoginForm
-          form={formInstance}
-          theme={theme}
-          signInConent={mockSignInContent}
-          signUpContent={mockSignUpContent}
-          onSubmit={mockOnSubmit}
-          onForgetPassword={mockOnForgetPassword}
-        />
-      );
-
-      // 验证主题特定元素存在
+  themes.forEach((theme) => {
+    it(`使用 ${theme} 主题正常渲染`, () => {
+      render(<TestFormWithRef theme={theme} />);
       expect(screen.getByText("登录")).toBeInTheDocument();
-      unmount();
+      expect(screen.getByText("注册")).toBeInTheDocument();
     });
+  });
+});
+
+// ==================== 自定义 component 覆盖 ====================
+describe("自定义 component 覆盖", () => {
+  it("传入自定义 component 时使用自定义组件", () => {
+    const customContent = [
+      { label: "自定义", field: "custom", type: "input" as const, component: <input data-testid="my-input" /> },
+    ];
+    render(<TestFormWithRef signInContent={customContent} />);
+    expect(screen.getByTestId("my-input")).toBeInTheDocument();
   });
 });

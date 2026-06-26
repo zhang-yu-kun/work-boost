@@ -101,12 +101,27 @@ export interface PublicLayoutIF {
   LogoContent?: ReactElement;
 }
 
-type signTy = "input" | "password";
+export type signTy = "input" | "password" | "phone" | "email";
+
+export interface SignFieldItem {
+  label: string;
+  field: string;
+  type: signTy;
+  component?: React.ReactNode;
+  rules?: any[];
+  suffix?: string[]; // email 类型的域名后缀选项
+}
+
 //
 export interface PubLoginFormIF {
   theme: "techno" | "natural" | "fire";
-  signInContent: { label: string; field: string; type: signTy }[];
-  signUpContent: { label: string; field: string; type: signTy }[];
-  onSubmit: (value: any, type: "signIn" | "signUp") => void;
+  signInContent: SignFieldItem[];
+  signUpContent: SignFieldItem[];
+  onSubmit: (value: any, type: "signIn" | "signUp") => void | Promise<void>;
   onForgetPassword: () => void;
+}
+
+export interface PubLoginFormRef {
+  switchToLogin: () => void;
+  switchToSignUp: () => void;
 }
